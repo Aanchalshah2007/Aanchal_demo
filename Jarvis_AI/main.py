@@ -5,12 +5,14 @@ import time
 import musiclib
 import requests
 from google import genai
-
+import os
 
 
 r = sr.Recognizer() #This creates a recognizer object that can convert speech to text
 engine = pyttsx4.init() #This starts the TTS engine, which converts text into spoken audio
-newsapi = "974ca3832d6e4d6fb369bfc264e8b9a1"
+
+newsapi = os.getenv("NEWS_API_KEY")
+
 
 #This function makes jarvis talk
 def speak(text):
@@ -19,12 +21,12 @@ def speak(text):
 
 def aiprocess(command):
 
-    client = genai.Client(api_key="AIzaSyDXSh8xNpeFgxe-5SILZyDvpMnH7Q2C2eQ")
-
-    r = client.models.generate_content(
-        model="gemini-2.5-flash", contents=command
+      client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+      r = client.models.generate_content(
+        model="gemini-2.5-flash", 
+        contents=command
     )
-    return r.text
+      return r.text
     
 
 def processCommand(c):
