@@ -27,4 +27,7 @@ like opening websites, playing music, and reading news.
 4. Run  
    `python main.py`
 
+## Security
+All API keys are managed using environment variables and are excluded from version control.
+
 
