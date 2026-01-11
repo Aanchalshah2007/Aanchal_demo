@@ -1,14 +1,17 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 import speech_recognition as sr #ALlows jarvis to listen to your voice using the microphone
 import webbrowser #Allows jarvis to open websites(Google)
 import pyttsx4 #Allows jarvis to speak using text-to-speech
 import time
 import musiclib
 import requests
-from google import genai
 import os
+from client import ai_response
 
 
-r = sr.Recognizer() #This creates a recognizer object that can convert speech to text
+r = sr.Recognizer() #This creates a recognize  #object that can convert speech to text
 engine = pyttsx4.init() #This starts the TTS engine, which converts text into spoken audio
 
 newsapi = os.getenv("NEWS_API_KEY")
@@ -19,14 +22,6 @@ def speak(text):
     engine.say(text) #looks the text into the speech engine
     engine.runAndWait() #actually speaks the text out loud
 
-def aiprocess(command):
-
-      client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-      r = client.models.generate_content(
-        model="gemini-2.5-flash", 
-        contents=command
-    )
-      return r.text
     
 
 def processCommand(c):
@@ -74,7 +69,7 @@ def processCommand(c):
 
 #Let genAI handle the request
     else:
-        output = aiprocess(c)
+        output = ai_response(c)
         print(output)
         speak(output)
         
@@ -97,7 +92,7 @@ if __name__=="__main__":
         try:
             with sr.Microphone() as source:
                 print("Listening...")
-                audio = r.listen(source, timeout=2,phrase_time_limit=1)
+                audio = r.listen(source, timeout=4,phrase_time_limit=1)
             word = r.recognize_google(audio)
             print("Heard:",word)
 
@@ -116,6 +111,9 @@ if __name__=="__main__":
 
         except sr.UnknownValueError:
             print("Sphinx could not understand audio")
+
+        except Exception as e:
+            print("Error;{0}".format(e))tand audio")
 
         except Exception as e:
             print("Error;{0}".format(e))
