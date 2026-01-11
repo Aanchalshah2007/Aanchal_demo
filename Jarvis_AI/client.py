@@ -1,8 +1,15 @@
+from dotenv import load_dotenv
+
+
+import os
 from google import genai
+load_dotenv()
 
-client = genai.Client(api_key="AIzaSyDXSh8xNpeFgxe-5SILZyDvpMnH7Q2C2eQ")
+def ai_response(prompt: str) -> str:
+    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
-r = client.models.generate_content(
-    model="gemini-2.5-flash", contents="Explain how AI works in detail"
-)
-print(r.text)
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt
+    )
+    return response.text
